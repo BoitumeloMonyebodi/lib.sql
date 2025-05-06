@@ -1,36 +1,15 @@
-# SQLAlchemy models representing the tables in the Library Management System
+# models/models.py
+from pydantic import BaseModel
+from typing import Optional
 
-from sqlalchemy import Column, Integer, String, Date, ForeignKey
-from sqlalchemy.orm import relationship
-from database import Base
+# Define the 'Member' model for request data validation
+class Member(BaseModel):
+    name: str            # Member's full name
+    email: str           # Member's email address
+    join_date: str       # Date the member joined (in 'YYYY-MM-DD' format)
 
-class Book(Base):
-    __tablename__ = 'books'
-
-    book_id = Column(Integer, primary_key=True, index=True)
-    title = Column(String(255), nullable=False)
-    author = Column(String(100), nullable=False)
-    available = Column(Integer, default=1)  # 1 = Available, 0 = Borrowed
-
-    borrowings = relationship("Borrowing", back_populates="book")
-
-class Member(Base):
-    __tablename__ = 'members'
-
-    member_id = Column(Integer, primary_key=True, index=True)
-    name = Column(String(100), nullable=False)
-    email = Column(String(100), unique=True, nullable=False)
-
-    borrowings = relationship("Borrowing", back_populates="member")
-
-class Borrowing(Base):
-    __tablename__ = 'borrowings'
-
-    borrow_id = Column(Integer, primary_key=True, index=True)
-    member_id = Column(Integer, ForeignKey('members.member_id'))
-    book_id = Column(Integer, ForeignKey('books.book_id'))
-    borrow_date = Column(Date)        # Date book was borrowed
-    return_date = Column(Date)        # Date book was returned
-
-    member = relationship("Member", back_populates="borrowings")
-    book = relationship("Book", back_populates="borrowings")
+# Define the 'MemberUpdate' model for updating member details
+class MemberUpdate(BaseModel):
+    name: Optional[str]  # Optional: Update name
+    email: Optional[str] # Optional: Update email
+    join_date: Optional[str] # Optional: Update join date
