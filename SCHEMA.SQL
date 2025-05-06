@@ -1,4 +1,4 @@
--- This SQL script creates a database schema for a contact management system.
+This SQL script creates a database schema for a contact management system.
 -- It includes three tables: 'contact_groups', 'contacts', and 'logs'.
 
 -- Create a new database
